@@ -9,4 +9,20 @@ jobs:
          run : echo "HI, this is my first mowrkflow action."
        - name : Checking os Release For Github Hosted Runner
          run : cat /etc/os-release
+       - name: Calling sleep
+         run: sleep 20
+  job2:
+     name: JOB2
+     runs-on: ubuntu-latest
+     steps:
+      - name: Checking the hostnmae for runner
+        run: hostname
+      - name: runing multiple commands
+        run : |
+           echo "HI from A"
+           echo "HI from B"
+           sleep 20
+      
+      
+     
     
