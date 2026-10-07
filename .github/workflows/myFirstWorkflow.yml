@@ -1,7 +1,7 @@
 name: my-first-workflow
 on: push
 jobs:
-  jobs1:
+  job1:
      name: JOB1
      runs-on: ubuntu-latest
      steps:
@@ -23,6 +23,22 @@ jobs:
            echo "HI from B"
            sleep 20
       
-      
+  job3:
+     name: JOB3
+     needs: job1
+     runs-on: windows-latest
+     steps:
+      - name: check runner info
+        shell: pwsh
+        run: get-computer-info
+  job4:
+     name: JOB4
+     needs: [job1, job2, job3]
+     runs-on: macos-latest
+     steps:
+      - name: job for multiple dependecies
+        run: sleep 10
+      - name: Checking runner info
+        run: sw_vers
      
     
