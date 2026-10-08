@@ -1,0 +1,20 @@
+name: class_01 git actions
+on:
+ push:
+jobs:
+ job1:
+  name: JOB1
+  runs-on: ubuntu-latest
+  steps:
+    - name: Step-1
+      run: |
+         pwd
+         ls -ltr
+         hostname
+    - name: Step-2-Checkout
+      uses: actions/checkout@v5.0.1
+    - name: Step-3
+      run: |
+         pwd
+         ls -ltr
+         hostname
