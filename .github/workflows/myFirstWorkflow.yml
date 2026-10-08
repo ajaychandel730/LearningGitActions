@@ -1,48 +1,48 @@
-name: my-first-workflow
-on: 
- workflow_dispatch:  
- push:
+# name: my-first-workflow
+# on: 
+#  workflow_dispatch:  
+#  push:
   
   
-jobs:
-  job1:
-     name: JOB1
-     runs-on: ubuntu-latest
-     steps:
-       - name: Running single Command in JOB1
-         run : echo "HI, this is my first mowrkflow action."
-       - name : Checking os Release For Github Hosted Runner
-         run : cat /etc/os-release
-       - name: Calling sleep
-         run: sleep 20
-  job2:
-     name: JOB2
-     runs-on: ubuntu-latest
-     steps:
-      - name: Checking the hostnmae for runner
-        run: hostname
-      - name: runing multiple commands
-        run : |
-           echo "HI from A"
-           echo "HI from B"
-           sleep 20
+# jobs:
+#   job1:
+#      name: JOB1
+#      runs-on: ubuntu-latest
+#      steps:
+#        - name: Running single Command in JOB1
+#          run : echo "HI, this is my first mowrkflow action."
+#        - name : Checking os Release For Github Hosted Runner
+#          run : cat /etc/os-release
+#        - name: Calling sleep
+#          run: sleep 20
+#   job2:
+#      name: JOB2
+#      runs-on: ubuntu-latest
+#      steps:
+#       - name: Checking the hostnmae for runner
+#         run: hostname
+#       - name: runing multiple commands
+#         run : |
+#            echo "HI from A"
+#            echo "HI from B"
+#            sleep 20
       
-  job3:
-     name: JOB3
-     needs: job1
-     runs-on: windows-latest
-     steps:
-      - name: check runner info
-        shell: pwsh
-        run: get-computerinfo
-  job4:
-     name: JOB4
-     needs: [job1, job2, job3]
-     runs-on: macos-latest
-     steps:
-      - name: job for multiple dependecies
-        run: sleep 10
-      - name: Checking runner info
-        run: sw_vers
+  # job3:
+  #    name: JOB3
+  #    needs: job1
+  #    runs-on: windows-latest
+  #    steps:
+  #     - name: check runner info
+  #       shell: pwsh
+  #       run: get-computerinfo
+  # job4:
+  #    name: JOB4
+  #    needs: [job1, job2, job3]
+  #    runs-on: macos-latest
+  #    steps:
+  #     - name: job for multiple dependecies
+  #       run: sleep 10
+  #     - name: Checking runner info
+  #       run: sw_vers
      
     
