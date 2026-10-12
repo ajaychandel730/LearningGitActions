@@ -1,0 +1,57 @@
+name: class_02 git actions pull
+on:
+ push:
+  branches:
+   - dev
+   - 'feature-*'
+   - main
+jobs:
+ job1:
+  name: JOB1
+  runs-on: ubuntu-latest
+  steps:
+    - name: Step-1
+      run: |
+         pwd
+         ls -ltr
+         hostname
+    - name: Step-2-Checkout
+      uses: actions/checkout@v5.0.1
+    - name: Step-3
+      run: |
+         echo `pwd` >> myartifact.txt
+         mkdir artifacts
+         echo `ls -ltr` >> artifacts/list.txt
+         echo `hostname` >> artifacts/hostname.txt
+    - name: Upload single file
+      uses:  actions/upload-artifact@v7.0.2
+      with:
+        name: single_file
+        path: ./myartifact.txt
+ 
+
+ job2:
+  name: JOB2
+  needs: job1
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checking current directory
+      run: |
+         pwd
+         ls -ltr
+    - name: Download single file artifacts
+      uses: actions/download-artifact@v8.0.2
+      with:
+         name: single_file
+    - name: Checking current directory post download artifact
+      run: |
+         pwd
+         ls -ltr     
+ 
+     
+  
+    
+     
+
+
+     
