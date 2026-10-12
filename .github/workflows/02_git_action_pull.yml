@@ -5,6 +5,9 @@ on:
    - dev
    - 'feature-*'
    - main
+ pull_request:
+   branches:
+     - main  
 jobs:
  job1:
   name: JOB1
