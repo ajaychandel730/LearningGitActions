@@ -1,6 +1,10 @@
-name: class_01 git actions
+name: class_02 git actions pull
 on:
  push:
+  branches:
+   - dev
+   - 'feature-*'
+   - main
 jobs:
  job1:
   name: JOB1
@@ -24,26 +28,7 @@ jobs:
       with:
         name: single_file
         path: ./myartifact.txt
-    - name: Upload from directory
-      uses: actions/upload-artifact@v7.0.2
-      with:
-         name: directory_artifacts
-         path: artifacts/
-    - name: Upload multiple paths
-      uses: actions/upload-artifact@v7.0.2
-      with:
-         name: Multiple paths
-         path: |
-             ./myartifact.txt
-              artifacts/
-    - name: Upload multiple paths with exclusion
-      uses: actions/upload-artifact@v7.0.2
-      with:
-         name: Multiple paths with exclusion
-         path: |
-            ./myartifact.txt
-              artifacts/
-              !**/myartifact.txt
+ 
 
  job2:
   name: JOB2
@@ -62,47 +47,7 @@ jobs:
       run: |
          pwd
          ls -ltr     
- job3:
-   name: JOB3
-   needs: job1
-   runs-on: ubuntu-latest
-   steps:
-    - name: Checking current directory
-      run: |
-         pwd
-         ls -ltr
-    - name: Download artifacts directory
-      uses: actions/download-artifact@v8.0.2
-      with:
-         name: directory_artifacts  
-    - name: Checking current directory post download artifact
-      run: |
-         pwd
-         ls -ltr
-         
- job4:
-   name: JOB4
-   needs: job1
-   runs-on: ubuntu-latest
-   steps:
-    - name: Creating custom folder for download
-      run: |
-         mkdir -p download_directory
-    - name: Checking current directory
-      run: |
-         pwd
-         ls -ltr
-    - name: Download artifacts directory
-      uses: actions/download-artifact@v8.0.2
-      with:
-         name: directory_artifacts
-         path: download_directory
-    - name: Checking current directory post download artifact
-      run: |
-         pwd
-         ls -ltr download_directory        
-      
-      
+ 
      
   
     
