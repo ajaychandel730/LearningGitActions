@@ -62,7 +62,23 @@ jobs:
       run: |
          pwd
          ls -ltr     
-         
+ job3:
+   name: JOB3
+   needs: job1
+   runs-on: ubuntu-latest
+   steps:
+    - name: Checking current directory
+      run: |
+         pwd
+         ls -ltr
+    - name: Download artifacts directory
+      uses: actions/download-artifact@v8.0.2
+      with:
+         name: directory_artifacts  
+    - name: Checking current directory post download artifact
+      run: |
+         pwd
+         ls -ltr        
          
       
       
