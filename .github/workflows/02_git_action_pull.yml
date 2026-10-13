@@ -2,8 +2,6 @@ name: class_02 git actions pull
 on:
  push:
   branches:
-   - dev
-   - 'feature-*'
    - main
  pull_request:
    branches:
@@ -49,7 +47,9 @@ jobs:
     - name: Checking current directory post download artifact
       run: |
          pwd
-         ls -ltr     
+         ls -ltr
+    - name: Demo step for PR
+      run: exist 0
  
      
   
