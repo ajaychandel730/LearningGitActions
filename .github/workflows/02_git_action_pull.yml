@@ -5,6 +5,11 @@ on:
    - dev
    - 'feature-*'
    - main
+env:
+ ENV_TYPE: DEV
+ APP_USER: jango
+ APP_PORT: 80
+ 
 jobs:
  job1:
   name: JOB1
@@ -47,6 +52,10 @@ jobs:
       run: |
          pwd
          ls -ltr     
+    - name: Referring envornment variables
+      run: |
+        echo "[INFO] Running env for $ENV_TYPE with user $APP_USER."
+        echo "[INFO] Once deploy application is accessible on port $APP_PORT."
  
      
   
