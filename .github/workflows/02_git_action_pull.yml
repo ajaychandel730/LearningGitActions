@@ -44,12 +44,9 @@ jobs:
       uses: actions/download-artifact@v8.0.2
       with:
          name: single_file
-    - name: Checking current directory post download artifact
-      run: |
-         pwd
-         ls -ltr
-    - name: Demo step for PR
-      run: exit 0
+    - name: Referring secret env
+      run : |
+        echo "[INFO] Application password : ${{secrets.APP_PASSWORD}}."
  
      
   
