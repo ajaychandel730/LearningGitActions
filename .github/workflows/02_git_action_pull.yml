@@ -71,8 +71,8 @@ jobs:
     - name: Referring env secrets
       run : | 
          echo "[INFO] password: ${{secrets.PASSWORD}}"
-      env:
-        name: STAGING
+   environment:
+      name: STAGING
  production:
    name: PROD DEPLOYMENT
    runs-on: ubuntu-latest
@@ -83,7 +83,7 @@ jobs:
     - name: Referring env secrets
       run : | 
          echo "[INFO] password: ${{secrets.PASSWORD}}"
-      env:
-        name: PRODUCTION       
+   environment:
+      name: PRODUCTION       
 
      
