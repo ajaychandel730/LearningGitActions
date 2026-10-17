@@ -61,6 +61,29 @@ jobs:
         echo "[INFO] current step is running on ${{runner.os}}"
         echo "[INFO] current job id is ${{job.check_run_id}}"
         
-
+ job4:
+   name: JOB4
+   runs-on: ubuntu-latest
+   steps:
+    - name: Referring env variables
+      run: |
+        echo "[INFO] running deployment on ${{vars.HOST}}"
+    - name: Referring env secrets
+      run : | 
+         echo "[INFO] password: ${{secrets.PASSWORD}}"
+      env:
+        name: STAGING
+ job5:
+  name: JOB5
+  runs-on: ubuntu-latest
+  steps:
+   - name: Referring env variables
+     run: |
+       echo "[INFO] running deployment on ${{vars.HOST}}"
+   - name: Referring env secrets
+     run : | 
+        echo "[INFO] password: ${{secrets.PASSWORD}}"
+     env:
+       name: PRODUCTION       
 
      
