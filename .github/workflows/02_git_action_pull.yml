@@ -50,9 +50,17 @@ jobs:
         echo "[INFO] Application password : ${{secrets.APP_PASSWORD}}."
  
      
-  
-    
-     
+ job3:
+   name: JOB3
+   runs-on: ubuntu-latest
+   steps:
+     - name : Inbuilt env variables
+       run: |
+        echo "[INFO] actor name is ${{github.actor}} in ${{github.ref_name}} branch"
+        echo "[INFO] event name is ${{github.event_name}}"
+        echo "[INFO] current step is running on ${{runner.os}}"
+        echo "[INFO] current job id is ${{job.check_run_id}}"
+        
 
 
      
