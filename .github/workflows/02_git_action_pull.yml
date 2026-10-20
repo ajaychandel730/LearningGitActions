@@ -60,7 +60,7 @@ jobs:
         echo "[INFO] event name is ${{github.event_name}}"
         echo "[INFO] current step is running on ${{runner.os}}"
         echo "[INFO] current job id is ${{job.check_run_id}}"
-        
+ # ///////////////////////STAGING ENV//////////////       
  staging:
    name: STAGE DEPLOYMENT
    runs-on: ubuntu-latest
@@ -73,6 +73,8 @@ jobs:
          echo "[INFO] password: ${{secrets.PASSWORD}}"
    environment:
       name: STAGING
+   if: github.ref_name == 'dev'  
+   # ///////////////////////PROD ENV//////////////
  production:
    name: PROD DEPLOYMENT
    runs-on: ubuntu-latest
@@ -85,5 +87,5 @@ jobs:
          echo "[INFO] password: ${{secrets.PASSWORD}}"
    environment:
       name: PRODUCTION       
-
+   if: github.ref_name == 'main'
      
