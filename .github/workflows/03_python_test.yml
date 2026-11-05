@@ -2,9 +2,9 @@ name: 03_Python_Tests_and_Coverage
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "dev" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "dev" ]
   workflow_dispatch:
 
 jobs:
@@ -29,12 +29,17 @@ jobs:
 
       - name: Run Tests with Pytest & Coverage
         run: |
-          pytest -v --cov=app --cov-report=term --cov-report=xml
+          mkdir -p reports/
+          pytest -v \
+            --junitxml=reports/unit-test-results.xml \
+            --cov=app \
+            --cov-report=term-missing \
+            --cov-report=xml:reports/coverage.xml \
+            --cov-report=html:reports/htmlcov
 
-      - name: Upload Test Coverage Report (Artifact)
+      - name: Upload Test & Coverage Reports (Artifact)
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: coverage-report
-          path: coverage.xml
-
+          name: test-and-coverage-reports
+          path: reports/
