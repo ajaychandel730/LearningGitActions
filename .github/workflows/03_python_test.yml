@@ -43,3 +43,25 @@ jobs:
         with:
           name: test-and-coverage-reports
           path: reports/
+  codeeql:
+    name: CodeQL Security Scan
+    runs-on: ubuntu-latest
+    permissions:
+       actions: read
+       contents: read
+       Security-events: write 
+    strategy:
+      matrix: 
+        language: ['python']
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5.0.0
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{matrix.language}}
+      - name: Perform codeQl analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+         category: "security"
+
