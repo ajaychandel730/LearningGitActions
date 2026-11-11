@@ -49,7 +49,7 @@ jobs:
     permissions:
        actions: read
        contents: read
-       Security-events: write 
+       security-events: write 
     strategy:
       matrix: 
         language: ['python']
