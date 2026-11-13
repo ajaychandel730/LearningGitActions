@@ -24,7 +24,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          python -m pip install --upgrade pip
+          python -m pip install --only-binary :all: --upgrade pip
           pip install --only-binary :all: -r requirements.txt
 
       - name: Run Tests with Pytest & Coverage
@@ -82,7 +82,7 @@ jobs:
           env:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         - name: SonarQube Quality Gate check
-          uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435
+          uses: sonarsource/sonarqube-quality-gate-action@master
           with:
             pollingTimeoutSec: 600
           env:
