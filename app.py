@@ -7,8 +7,10 @@ from typing import Any, Dict, Optional, Tuple
 from flask import Flask, jsonify, request
 from flask_wtf.csrf import CSRFProtect
 import requests
+import os
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = os.getenv("APP_SECRET_KEY")
 csrf = CSRFProtect()
 csrf.init_app(app)
 
