@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  unitTest:
     name: Run Pytest & Coverage
     runs-on: ubuntu-latest
 
@@ -43,7 +43,7 @@ jobs:
         with:
           name: test-and-coverage-reports
           path: reports/
-  codeeql:
+  codeql:
     name: CodeQL Security Scan
     runs-on: ubuntu-latest
     permissions:
@@ -64,4 +64,20 @@ jobs:
         uses: github/codeql-action/analyze@v3
         with:
          category: "security"
-
+sonarqube:
+    name: SonarQube
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@5.0.0
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Cache SonarQube packages
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@4d1dc0c91ee400dcf8a6dddf2f705ac36542e304 # v8.4.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
