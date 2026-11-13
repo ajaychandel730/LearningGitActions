@@ -5,9 +5,12 @@ and external API requests for CI/CD and testing.
 
 from typing import Any, Dict, Optional, Tuple
 from flask import Flask, jsonify, request
+from flask_wtf.csrf import CSRFProtect
 import requests
 
 app = Flask(__name__)
+csrf = CSRFProtect()
+csrf.init_app(app)
 
 # In-memory storage for items demo
 ITEMS: list[Dict[str, Any]] = []
@@ -130,4 +133,4 @@ def not_found(error):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host='127.0.0.1', port=5000, debug=True)
