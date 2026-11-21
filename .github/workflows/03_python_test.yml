@@ -66,11 +66,17 @@ jobs:
          category: "security"
   sonarqube:
       name: SonarQube
+      needs: unitTest
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v5.0.0
           with:
             fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+        - name: Download coverage report
+          uses: actions/upload-artifact@v4
+          with:
+            name: unit-test-report
+            path: reports/
         - name: Cache SonarQube packages
           uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 
           with:

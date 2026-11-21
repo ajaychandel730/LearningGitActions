@@ -8,6 +8,7 @@ from flask import Flask, jsonify, request
 from flask_wtf.csrf import CSRFProtect
 import requests
 import os
+from urllib.parse import quote
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("APP_SECRET_KEY")
@@ -38,7 +39,7 @@ def fetch_github_user(username: str, timeout: int = 5) -> Tuple[Optional[Dict[st
     Fetch public GitHub user profile using requests.
     Returns (data, status_code).
     """
-    url = f"https://api.github.com/users/{username}"
+    url = f"https://api.github.com/users/{quote(username)}"
     try:
         response = requests.get(url, timeout=timeout)
         if response.status_code == 200:
