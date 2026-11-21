@@ -75,7 +75,7 @@ jobs:
         - name: Download coverage report
           uses: actions/download-artifact@v4
           with:
-            name: unit-test-report
+            name: test-and-coverage-reports
             path: reports/
         - name: Cache SonarQube packages
           uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 
