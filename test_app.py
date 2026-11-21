@@ -1,7 +1,7 @@
 """
 Comprehensive pytest test suite for the Flask application.
 Covers unit tests, route integration tests, error handling,
-and mocking external network calls with requests.
+CSRF protection, and mocking external network calls with requests.
 """
 
 from unittest.mock import patch
@@ -14,6 +14,7 @@ from app import ITEMS, app, calculate, fetch_github_user
 def client():
     """Create a configured Flask test client and reset state."""
     app.config["TESTING"] = True
+    app.config["WTF_CSRF_ENABLED"] = False
     ITEMS.clear()
     with app.test_client() as test_client:
         yield test_client
@@ -194,3 +195,57 @@ def test_fetch_github_user_timeout_or_error(mock_get, client):
     response = client.get("/api/user/anyuser")
     assert response.status_code == 503
     assert "Failed to connect" in response.get_json()["error"]
+
+
+# =====================================================================
+# 6. CSRF Protection Tests
+# =====================================================================
+def test_get_csrf_token(client):
+    """Test GET /api/csrf-token returns a valid token."""
+    response = client.get("/api/csrf-token")
+    assert response.status_code == 200
+    data = response.get_json()
+    assert "csrf_token" in data
+    assert len(data["csrf_token"]) > 0
+
+
+def test_csrf_blocks_request_when_enabled():
+    """Verify CSRFProtect blocks POST without token when WTF_CSRF_ENABLED is True."""
+    app.config["TESTING"] = True
+    app.config["WTF_CSRF_ENABLED"] = True
+
+    with app.test_client() as test_client:
+        response = test_client.post(
+            "/api/calculate",
+            json={"a": 2, "b": 3, "operation": "add"},
+        )
+        assert response.status_code == 400
+        data = response.get_json()
+        assert "CSRF validation failed" in data["error"]
+
+    # Restore setting
+    app.config["WTF_CSRF_ENABLED"] = False
+
+
+def test_csrf_allows_request_with_valid_token():
+    """Verify CSRFProtect accepts POST with X-CSRFToken header when WTF_CSRF_ENABLED is True."""
+    app.config["TESTING"] = True
+    app.config["WTF_CSRF_ENABLED"] = True
+
+    with app.test_client() as test_client:
+        # 1. Fetch CSRF token
+        token_res = test_client.get("/api/csrf-token")
+        assert token_res.status_code == 200
+        token = token_res.get_json()["csrf_token"]
+
+        # 2. Make POST request with X-CSRFToken header
+        response = test_client.post(
+            "/api/calculate",
+            json={"a": 2, "b": 3, "operation": "add"},
+            headers={"X-CSRFToken": token},
+        )
+        assert response.status_code == 200
+        assert response.get_json()["result"] == 5.0
+
+    # Restore setting
+    app.config["WTF_CSRF_ENABLED"] = False

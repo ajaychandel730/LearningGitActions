@@ -4,19 +4,29 @@ and external API requests for CI/CD and testing.
 """
 
 from typing import Any, Dict, Optional, Tuple
-from flask import Flask, jsonify, request
-from flask_wtf.csrf import CSRFProtect
-import requests
 import os
+import secrets
 from urllib.parse import quote
+from flask import Flask, jsonify, request
+from flask_wtf.csrf import CSRFError, CSRFProtect, generate_csrf
+import requests
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.getenv("APP_SECRET_KEY")
-csrf = CSRFProtect()
-csrf.init_app(app)
+
+# Configure secret key: use environment variable in production or generate a secure fallback
+app.config["SECRET_KEY"] = os.getenv("APP_SECRET_KEY") or secrets.token_hex(32)
+
+# Enable CSRF Protection
+csrf = CSRFProtect(app)
 
 # In-memory storage for items demo
 ITEMS: list[Dict[str, Any]] = []
+
+
+@app.errorhandler(CSRFError)
+def handle_csrf_error(e):
+    """Custom JSON error response when CSRF validation fails."""
+    return jsonify({"error": f"CSRF validation failed: {e.description}"}), 400
 
 
 def calculate(a: float, b: float, operation: str) -> float:
@@ -67,6 +77,12 @@ def home():
 def health():
     """Health check endpoint."""
     return jsonify({"status": "healthy"}), 200
+
+
+@app.route("/api/csrf-token", methods=["GET"])
+def get_csrf_token():
+    """Endpoint for clients/frontends to obtain a valid CSRF token."""
+    return jsonify({"csrf_token": generate_csrf()}), 200
 
 
 @app.route("/api/calculate", methods=["POST"])
